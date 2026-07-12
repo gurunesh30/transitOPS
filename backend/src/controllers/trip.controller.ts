@@ -17,7 +17,7 @@ export class TripController {
     try {
       const { id } = req.params;
       const { final_odometer } = req.body;
-      const completedTrip = await TripService.executeCompletionTransaction(id, Number(finalOdometer));
+      const completedTrip = await TripService.executeCompletionTransaction(id, Number(final_odometer));
       await redisService.invalidateCache('analytics:dashboard');
       res.status(200).json(completedTrip);
     } catch (err: any) {

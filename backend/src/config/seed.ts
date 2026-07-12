@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import 'dotenv/config';
+import { prisma } from './database';
 import bcrypt from 'bcrypt';
 
-const prisma = new PrismaClient();
 
 async function main() {
   const hashedPassword = await bcrypt.hash('admin123', 10);
