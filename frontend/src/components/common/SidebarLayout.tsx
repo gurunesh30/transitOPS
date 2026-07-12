@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, Truck, Users, Route, Wrench, DollarSign } from 'lucide-react';
+import { LayoutDashboard, Truck, Users, Route, Wrench, IndianRupee } from 'lucide-react';
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
@@ -13,7 +13,7 @@ export const SidebarLayout: React.FC<SidebarLayoutProps> = ({ children, activePa
     { name: 'Drivers', icon: Users, id: 'drivers' },
     { name: 'Trips', icon: Route, id: 'trips' },
     { name: 'Maintenance', icon: Wrench, id: 'maintenance' },
-    { name: 'Expenses', icon: DollarSign, id: 'expenses' },
+    { name: 'Expenses', icon: IndianRupee, id: 'expenses' },
   ];
 
   return (
