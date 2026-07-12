@@ -12,7 +12,7 @@ export const getVehicles = async (req: Request, res: Response) => {
             return await prisma.vehicle.findMany({
                 orderBy: { registration_number: 'asc' }
             });
-        }, { ttl: 60 });
+        }, { ttl: 60, res });
 
         return res.status(200).json({
             status: 'success',
