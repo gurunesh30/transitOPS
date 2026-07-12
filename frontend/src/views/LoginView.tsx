@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { Shield, Eye, EyeOff, Lock, Mail, Users, AlertTriangle, ArrowRight } from 'lucide-react';
-import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
-import { Select } from '../components/ui/Select';
-import { Card } from '../components/ui/Card';
+import { Shield, Eye, EyeOff, AlertTriangle, ArrowRight, Loader } from 'lucide-react';
 
 export const LoginView: React.FC = () => {
   const {
@@ -17,7 +13,8 @@ export const LoginView: React.FC = () => {
     isLocked,
     addToast,
     addLog,
-    lastLoginTime
+    lastLoginTime,
+    login,
   } = useApp();
 
   const [email, setEmail] = useState('');
@@ -85,34 +82,22 @@ export const LoginView: React.FC = () => {
     password.length >= 8 &&
     !isLocked;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormValid) return;
 
     setLoading(true);
 
-    setTimeout(() => {
-      if (password !== DEMO_PASSWORD) {
-        setLoading(false);
-        incrementFailedAttempts();
-        addToast('Invalid password credentials. Please try again.', 'danger', 'Login Failed');
-        addLog('alert', `Failed authentication attempt using email ${email}`, 'warning');
-      } else {
-        setLoading(false);
-        setSuccessAnim(true);
-        addToast(`Welcome back, ${selectedRole}!`, 'success', 'Login Successful');
-        addLog('vehicle', `User logged in with role: ${selectedRole}`, 'success');
+    const success = await login(email, password);
+    
+    if (success) {
+      setSuccessAnim(true);
+      setTimeout(() => {
+        setSuccessAnim(false);
+      }, 1500);
+    }
 
-        setTimeout(() => {
-          setCurrentUser({
-            id: 'u1',
-            name: 'Alex Mercer',
-            email,
-            role: selectedRole
-          });
-        }, 1000);
-      }
-    }, 1500);
+    setLoading(false);
   };
 
   const fillDemoCreds = () => {

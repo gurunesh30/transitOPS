@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 
 export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
@@ -6,37 +6,41 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
   hint?: string;
   placeholder?: string;
   options: { value: string; label: string; disabled?: boolean }[];
-  fullWidth?: boolean;
 }
 
-export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, error, hint, placeholder, options, fullWidth = true, className = '', id, ...props }, ref) => {
-    const selectId = id || `select_${Math.random().toString(36).slice(2, 9)}`;
-    const errorId = `${selectId}_error`;
-    const hintId = `${selectId}_hint`;
+export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
+  ({ label, error, hint, placeholder, options, className = '', id, disabled, required, ...props }, ref) => {
+    const selectId = id || `select-${React.useId()}`;
+    const errorId = error ? `${selectId}-error` : undefined;
+    const hintId = hint ? `${selectId}-hint` : undefined;
 
     return (
-      <div className={`${fullWidth ? 'w-full' : ''} ${className}`}>
+      <div className="w-full">
         {label && (
-          <label htmlFor={selectId} className="block text-sm font-medium text-text-secondary mb-1.5">
+          <label htmlFor={selectId} className="block text-xs font-semibold text-text-secondary mb-1.5 flex items-center gap-1.5">
             {label}
+            {required && <span className="text-brand-danger" aria-hidden="true">*</span>}
           </label>
         )}
         <div className="relative">
           <select
             ref={ref}
             id={selectId}
+            disabled={disabled}
+            aria-invalid={error ? 'true' : 'false'}
+            aria-describedby={`${errorId || ''} ${hintId || ''}`.trim() || undefined}
             className={`
-              w-full appearance-none rounded-xl border bg-bg-primary/60 text-text-primary
+              w-full appearance-none bg-bg-primary border rounded-xl text-text-primary
+              transition-all duration-150
+              focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent
+              disabled:opacity-50 disabled:cursor-not-allowed
               pl-4 pr-10 py-2.5 text-sm
               ${error
-                ? 'border-brand-danger focus:border-brand-danger focus:ring-2 focus:ring-brand-danger/20'
-                : 'border-border-primary hover:border-border-secondary focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20'
+                ? 'border-brand-danger focus:ring-brand-danger'
+                : 'border-border-primary hover:border-border-secondary'
               }
-              disabled:opacity-50 disabled:cursor-not-allowed
+              ${className}
             `}
-            aria-invalid={error ? 'true' : 'false'}
-            aria-describedby={error ? errorId : hint ? hintId : undefined}
             {...props}
           >
             {placeholder && (

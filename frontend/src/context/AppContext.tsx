@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import type { User, UserRole, Trip } from '../types';
 import { mockVehicles, mockDrivers, mockTrips, mockActivityLogs } from '../data/mockData';
 import type { ExtendedVehicle, ExtendedDriver, ActivityLog } from '../data/mockData';
-import { setAuthToken, vehiclesApi, driversApi, tripsApi, authApi } from '../services/api';
+import { api, setAuthToken, getAuthToken, vehiclesApi, driversApi, tripsApi, reportsApi, authApi } from '../services/api';
 
 export interface Toast {
   id: string;
@@ -91,7 +91,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [theme, setThemeState] = useState<'dark' | 'midnight' | 'corporate'>(
     (localStorage.getItem('transitops-theme') as any) || 'dark'
   );
-  
+
   const setTheme = (newTheme: 'dark' | 'midnight' | 'corporate') => {
     setThemeState(newTheme);
     localStorage.setItem('transitops-theme', newTheme);
@@ -102,6 +102,14 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     const root = document.documentElement;
     root.setAttribute('data-theme', theme);
   }, [theme]);
+
+  // Initialize auth token from localStorage on app start
+  useEffect(() => {
+    const token = localStorage.getItem('transitops_token');
+    if (token) {
+      setAuthToken(token);
+    }
+  }, []);
 
   // Auth states
   const [currentUser, setCurrentUser] = useState<User | null>(null);

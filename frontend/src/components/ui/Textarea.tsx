@@ -1,41 +1,44 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
   hint?: string;
-  fullWidth?: boolean;
-  rows?: number;
 }
 
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ label, error, hint, fullWidth = true, rows = 3, className = '', id, ...props }, ref) => {
-    const textareaId = id || `textarea_${Math.random().toString(36).slice(2, 9)}`;
-    const errorId = `${textareaId}_error`;
-    const hintId = `${textareaId}_hint`;
+export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+  ({ label, error, hint, className = '', id, disabled, required, ...props }, ref) => {
+    const textareaId = id || `textarea-${React.useId()}`;
+    const errorId = error ? `${textareaId}-error` : undefined;
+    const hintId = hint ? `${textareaId}-hint` : undefined;
 
     return (
-      <div className={`${fullWidth ? 'w-full' : ''} ${className}`}>
+      <div className="w-full">
         {label && (
-          <label htmlFor={textareaId} className="block text-sm font-medium text-text-secondary mb-1.5">
+          <label htmlFor={textareaId} className="block text-xs font-semibold text-text-secondary mb-1.5 flex items-center gap-1.5">
             {label}
+            {required && <span className="text-brand-danger" aria-hidden="true">*</span>}
           </label>
         )}
         <textarea
           ref={ref}
           id={textareaId}
-          rows={rows}
-          className={`
-            w-full rounded-xl border bg-bg-primary/60 text-text-primary
-            p-3.5 text-sm resize-y placeholder:text-text-muted transition-all duration-200
-            ${error
-              ? 'border-brand-danger focus:border-brand-danger focus:ring-2 focus:ring-brand-danger/20'
-              : 'border-border-primary hover:border-border-secondary focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20'
-            }
-            disabled:opacity-50 disabled:cursor-not-allowed
-          `}
+          disabled={disabled}
           aria-invalid={error ? 'true' : 'false'}
-          aria-describedby={error ? errorId : hint ? hintId : undefined}
+          aria-describedby={`${errorId || ''} ${hintId || ''}`.trim() || undefined}
+          className={`
+            w-full bg-bg-primary border rounded-xl text-text-primary resize-none
+            placeholder:text-text-muted
+            transition-all duration-150
+            focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent
+            disabled:opacity-50 disabled:cursor-not-allowed
+            p-3 text-sm min-h-[80px]
+            ${error
+              ? 'border-brand-danger focus:ring-brand-danger'
+              : 'border-border-primary hover:border-border-secondary'
+            }
+            ${className}
+          `}
           {...props}
         />
         {error && (

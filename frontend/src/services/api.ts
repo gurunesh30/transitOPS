@@ -66,96 +66,34 @@ export const authApi = {
 };
 
 export const vehiclesApi = {
-  list: () =>
-    api.get<
-      Array<{
-        id: string;
-        registration_number: string;
-        model: string;
-        type: string;
-        max_load_capacity: number;
-        odometer: number;
-        acquisition_cost: number;
-        status: string;
-        fuel_type: string;
-        purchase_date: string;
-        insurance_expiry: string;
-        region: string;
-      }>
-    >('/vehicles'),
-  create: (data: {
-    registration_number: string;
-    model: string;
-    type: string;
-    max_load_capacity: number;
-    fuel_type: string;
-    purchase_date: string;
-    insurance_expiry: string;
-    region: string;
-  }) => api.post('/vehicles', data),
+  list: () => api.get<{ id: string; registration_number: string; model: string; type: string; max_load_capacity: number; odometer: number; acquisition_cost: number; status: string; fuel_type: string; purchase_date: string; insurance_expiry: string; region: string }[]>('/vehicles'),
+  create: (data: { registration_number: string; model: string; type: string; max_load_capacity: number; fuel_type: string; purchase_date: string; insurance_expiry: string; region: string }) =>
+    api.post('/vehicles', data),
 };
 
 export const tripsApi = {
-  list: () =>
-    api.get<
-      Array<{
-        id: string;
-        source: string;
-        destination: string;
-        status: string;
-        cargo_weight: number;
-        planned_distance: number;
-        vehicle_id: string;
-        driver_id: string;
-        created_at: string;
-        completed_at?: string;
-      }>
-    >('/trips'),
-  create: (data: {
-    source: string;
-    destination: string;
-    cargo_weight: number;
-    planned_distance: number;
-    vehicle_id: string;
-    driver_id: string;
-  }) => api.post('/trips', data),
+  list: () => api.get<Array<{ id: string; source: string; destination: string; status: string; cargo_weight: number; planned_distance: number; vehicle_id: string; driver_id: string; created_at: string; completed_at?: string }>>('/trips'),
+  create: (data: { source: string; destination: string; cargo_weight: number; planned_distance: number; vehicle_id: string; driver_id: string }) =>
+    api.post('/trips', data),
   complete: (id: string) => api.post(`/trips/${id}/complete`, {}),
 };
 
 export const driversApi = {
-  list: () =>
-    api.get<
-      Array<{
-        id: string;
-        name: string;
-        license_number: string;
-        license_category: string;
-        license_expiry_date: string;
-        contact_number: string;
-        safety_score: number;
-        status: string;
-      }>
-    >('/drivers'),
-  create: (data: {
-    name: string;
-    license_number: string;
-    license_category: string;
-    license_expiry_date: string;
-    contact_number: string;
-  }) => api.post('/drivers', data),
+  list: () => api.get<Array<{ id: string; name: string; license_number: string; license_category: string; license_expiry_date: string; contact_number: string; safety_score: number; status: string }>>('/drivers'),
+  create: (data: { name: string; license_number: string; license_category: string; license_expiry_date: string; contact_number: string }) =>
+    api.post('/drivers', data),
 };
 
 export const reportsApi = {
-  dashboard: () =>
-    api.get<{
-      total_vehicles: number;
-      active_trips: number;
-      available_drivers: number;
-      maintenance_alerts: number;
-      fleet_utilization: number;
-      monthly_revenue: number;
-      fuel_efficiency: number;
-      safety_score: number;
-    }>('/analytics/dashboard'),
+  dashboard: () => api.get<{
+    total_vehicles: number;
+    active_trips: number;
+    available_drivers: number;
+    maintenance_alerts: number;
+    fleet_utilization: number;
+    monthly_revenue: number;
+    fuel_efficiency: number;
+    safety_score: number;
+  }>('/analytics/dashboard'),
   export: () => api.get('/analytics/export'),
 };
