@@ -475,7 +475,7 @@ export const mockActivityLogs: ActivityLog[] = [
     id: 'l4',
     timestamp: '2026-07-11T14:30:00Z',
     type: 'maintenance',
-    message: 'AC Compressor Service completed on CA-104-FED. Cost: $720.',
+    message: 'AC Compressor Service completed on CA-104-FED. Cost: ₹720.',
     status: 'success',
     user: 'Fleet Manager'
   },

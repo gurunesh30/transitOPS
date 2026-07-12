@@ -55,12 +55,14 @@ const AppContent: React.FC = () => {
     );
   }
 
-  // Sidebar navigation options
-  const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
-    { id: 'vehicles', label: 'Vehicles', icon: <Truck className="w-4 h-4" /> },
-    { id: 'drivers', label: 'Drivers', icon: <Users className="w-4 h-4" /> }
+  // Role-based navigation items
+  const allNavItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" />, roles: ['Fleet Manager', 'Administrator', 'Driver', 'Dispatcher'] },
+    { id: 'vehicles', label: 'Vehicles', icon: <Truck className="w-4 h-4" />, roles: ['Fleet Manager', 'Administrator', 'Dispatcher'] },
+    { id: 'drivers', label: 'Drivers', icon: <Users className="w-4 h-4" />, roles: ['Fleet Manager', 'Administrator'] },
   ] as const;
+
+  const navItems = allNavItems.filter(item => item.roles.includes(currentUser.role as any));
 
   // Active view router mapping
   const renderActiveView = () => {
@@ -119,6 +121,17 @@ const AppContent: React.FC = () => {
             )}
           </div>
 
+          {/* Collapsed sidebar expand button — shown at top when collapsed */}
+          {sidebarCollapsed && (
+            <button
+              onClick={() => setSidebarCollapsed(false)}
+              className="flex items-center justify-center w-full py-2.5 mt-1 text-white/50 hover:text-amber-500 hover:bg-amber-500/5 transition-all"
+              title="Expand Sidebar"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          )}
+
           {/* Navigation Links list */}
           <nav className="p-3 space-y-1">
             {navItems.map(item => {
@@ -143,15 +156,7 @@ const AppContent: React.FC = () => {
           </nav>
         </div>
 
-        {/* Collapsed sidebar open trigger */}
-        {sidebarCollapsed && (
-          <button
-            onClick={() => setSidebarCollapsed(false)}
-            className="p-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white mx-auto mb-4"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        )}
+
 
         {/* Sidebar Footer User detail card */}
         {!sidebarCollapsed && (
@@ -221,7 +226,8 @@ const AppContent: React.FC = () => {
                 className="p-2.5 rounded-xl border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all relative"
               >
                 <Bell className="w-4 h-4" />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-500 animate-ping" />
+                {/* Static unread indicator — no animation */}
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-500" />
               </button>
 
               {showNotifications && (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
-import { Search, Sparkles, Truck, User as UserIcon, Settings, CornerDownLeft, Star, Clock } from 'lucide-react';
+import { Search, Sparkles, Truck, User as UserIcon, Settings, CornerDownLeft, Star, Clock, X } from 'lucide-react';
 
 export const CommandPalette: React.FC = () => {
   const {
@@ -137,9 +137,13 @@ export const CommandPalette: React.FC = () => {
               setSelectedIndex(0);
             }}
           />
-          <div className="flex items-center gap-1 shrink-0 bg-white/5 px-2 py-1 rounded text-xs text-white/40 border border-white/10">
-            <span>ESC</span>
-          </div>
+          <button
+            onClick={() => setCtrlKOpen(false)}
+            className="shrink-0 p-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white/40 hover:text-white transition-all"
+            title="Close"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
 
         {/* Search Results / Recents Dashboard */}

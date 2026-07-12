@@ -383,7 +383,7 @@ export const MaintenanceTrendsChart: React.FC = () => {
                 strokeDasharray="2 2"
               />
               <text x={paddingLeft - 8} y={y + 4} textAnchor="end" className="text-[10px] fill-white/40 font-mono">
-                ${val}
+              ₹{val}
               </text>
             </g>
           );

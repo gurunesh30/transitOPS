@@ -578,7 +578,7 @@ export const VehicleRegistryView: React.FC = () => {
                       {/* Cost */}
                       {visibleColumns.cost && (
                         <td className={`${paddingClass} text-xs text-white/60 font-mono`}>
-                          ${vehicle.acquisition_cost.toLocaleString()}
+                          ₹{vehicle.acquisition_cost.toLocaleString('en-IN')}
                         </td>
                       )}
 
@@ -773,7 +773,7 @@ export const VehicleRegistryView: React.FC = () => {
                 <div className="grid grid-cols-2 gap-3.5">
                   <div className="p-3 bg-white/2 border border-white/5 rounded-xl">
                     <p className="text-white/40 uppercase text-[9px] font-bold">Acquisition cost</p>
-                    <p className="text-base font-bold text-white mt-1">${selectedVehicle.acquisition_cost.toLocaleString()}</p>
+                    <p className="text-base font-bold text-white mt-1">₹{selectedVehicle.acquisition_cost.toLocaleString('en-IN')}</p>
                   </div>
                   <div className="p-3 bg-white/2 border border-white/5 rounded-xl">
                     <p className="text-white/40 uppercase text-[9px] font-bold">Odometer mileage</p>
@@ -824,7 +824,7 @@ export const VehicleRegistryView: React.FC = () => {
                     <div key={record.id} className="p-4 bg-white/2 border border-white/5 rounded-xl space-y-2">
                       <div className="flex justify-between font-semibold">
                         <span className="text-white text-xs">{record.type}</span>
-                        <span className="text-amber-400 font-mono">${record.cost}</span>
+                        <span className="text-amber-400 font-mono">₹{record.cost}</span>
                       </div>
                       <p className="text-white/60 text-[11px] leading-relaxed">{record.notes}</p>
                       <p className="text-[9px] text-white/40 font-mono">{record.date}</p>
@@ -886,7 +886,7 @@ export const VehicleRegistryView: React.FC = () => {
                   </div>
                   <div className="p-3 bg-white/2 border border-white/5 rounded-xl text-center">
                     <p className="text-[9px] font-bold text-white/40 uppercase">Monthly Fuel Exp</p>
-                    <p className="text-base font-bold text-white mt-1">${selectedVehicle.fuel_statistics.monthly_cost}</p>
+                    <p className="text-base font-bold text-white mt-1">₹{selectedVehicle.fuel_statistics.monthly_cost}</p>
                   </div>
                 </div>
 
@@ -1059,7 +1059,7 @@ export const VehicleRegistryView: React.FC = () => {
 
                 {/* Cost */}
                 <div className="space-y-1">
-                  <label className="font-semibold text-white/60">Acquisition Cost ($)*</label>
+                  <label className="font-semibold text-white/60">Acquisition Cost (₹)*</label>
                   <input
                     type="number"
                     required
