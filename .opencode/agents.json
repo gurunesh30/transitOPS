@@ -1,0 +1,42 @@
+{
+  "agents": [
+    {
+      "id": "agent-1",
+      "name": "Backend API Agent",
+      "role": "backend-api",
+      "branch_prefix": "feat/be-",
+      "status": "working",
+      "current_feature": "feat-002",
+      "completed_features": [
+        "feat-001"
+      ]
+    },
+    {
+      "id": "agent-2",
+      "name": "Frontend UI Agent",
+      "role": "frontend-ui",
+      "branch_prefix": "feat/fe-",
+      "status": "idle",
+      "current_feature": null,
+      "completed_features": []
+    },
+    {
+      "id": "agent-3",
+      "name": "Database & Infrastructure Agent",
+      "role": "database-infra",
+      "branch_prefix": "feat/db-",
+      "status": "idle",
+      "current_feature": null,
+      "completed_features": []
+    },
+    {
+      "id": "agent-4",
+      "name": "Testing & QA Agent",
+      "role": "testing-qa",
+      "branch_prefix": "feat/qa-",
+      "status": "idle",
+      "current_feature": null,
+      "completed_features": []
+    }
+  ]
+}
