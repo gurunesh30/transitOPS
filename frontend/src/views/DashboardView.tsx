@@ -429,7 +429,27 @@ export const DashboardView: React.FC = () => {
                       <h3 className="text-sm font-bold text-white">Live Activity Audit Log</h3>
                       <p className="text-[10px] text-white/50 font-medium mt-0.5">Real-time system telemetry and dispatch audit trail</p>
                     </div>
-                    {showReorderControls}
+                    <div className="flex items-center gap-4">
+                      <div className="hidden sm:flex items-center gap-3 border-r border-white/5 pr-4">
+                        <div className="flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                          <span className="text-[9px] font-semibold text-white/40 uppercase tracking-wider">Success</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                          <span className="text-[9px] font-semibold text-white/40 uppercase tracking-wider">Info</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                          <span className="text-[9px] font-semibold text-white/40 uppercase tracking-wider">Warning</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                          <span className="text-[9px] font-semibold text-white/40 uppercase tracking-wider">Danger</span>
+                        </div>
+                      </div>
+                      {showReorderControls}
+                    </div>
                   </div>
                   <div className="space-y-4 mt-4 overflow-y-auto max-h-[300px] pr-1">
                     {logs.map((log) => {
