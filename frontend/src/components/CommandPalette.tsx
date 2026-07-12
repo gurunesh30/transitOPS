@@ -273,9 +273,12 @@ export const CommandPalette: React.FC = () => {
             <span className="flex items-center gap-1">
               <span className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-mono">Enter</span> Select
             </span>
-            <span className="flex items-center gap-1">
-              <span className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-mono">Esc</span> Close
-            </span>
+            <button
+              onClick={() => setCtrlKOpen(false)}
+              className="bg-white/5 hover:bg-white/10 active:bg-white/20 text-white/70 hover:text-white px-2 py-0.5 rounded text-[10px] border border-white/10 transition-all"
+            >
+              Close
+            </button>
           </div>
           <div>
             TransitOps Command Palette
