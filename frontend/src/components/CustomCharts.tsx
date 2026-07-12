@@ -36,15 +36,15 @@ export const FleetUtilizationChart: React.FC = () => {
   const areaPath = `${linePath} L ${points[points.length - 1].x} ${paddingTop + chartHeight} L ${points[0].x} ${paddingTop + chartHeight} Z`;
 
   return (
-    <div className="relative w-full h-full bg-white/0 select-none">
+    <div className="relative w-full h-full bg-transparent select-none">
       <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full overflow-visible">
         <defs>
           <linearGradient id="areaGlow" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.45" />
-            <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0.0" />
+            <stop offset="0%" stopColor="var(--color-brand-primary)" stopOpacity="0.45" />
+            <stop offset="100%" stopColor="var(--color-brand-primary)" stopOpacity="0.0" />
           </linearGradient>
           <filter id="shadowGlow" x="-10%" y="-10%" width="120%" height="120%">
-            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="var(--color-primary)" floodOpacity="0.3" />
+            <feDropShadow dx="0" dy="4" stdDeviation="6" floodColor="var(--color-brand-primary)" floodOpacity="0.3" />
           </filter>
         </defs>
 
@@ -58,7 +58,7 @@ export const FleetUtilizationChart: React.FC = () => {
                 y1={y}
                 x2={width - paddingRight}
                 y2={y}
-                stroke="var(--color-border)"
+                stroke="var(--color-border-primary)"
                 strokeWidth="1"
                 strokeDasharray="4 4"
               />
@@ -89,7 +89,7 @@ export const FleetUtilizationChart: React.FC = () => {
         <path
           d={linePath}
           fill="none"
-          stroke="var(--color-primary)"
+          stroke="var(--color-brand-primary)"
           strokeWidth="2.5"
           filter="url(#shadowGlow)"
           className="transition-all duration-300"
@@ -116,7 +116,7 @@ export const FleetUtilizationChart: React.FC = () => {
                 y1={paddingTop}
                 x2={p.x}
                 y2={paddingTop + chartHeight}
-                stroke="var(--color-secondary)"
+                stroke="var(--color-brand-secondary)"
                 strokeWidth="1.5"
                 strokeDasharray="2 2"
               />
@@ -127,8 +127,8 @@ export const FleetUtilizationChart: React.FC = () => {
                 cx={p.x}
                 cy={p.y}
                 r={hoveredIdx === index ? 6 : 4}
-                fill="var(--color-bg)"
-                stroke={hoveredIdx === index ? 'var(--color-secondary)' : 'var(--color-primary)'}
+                fill="var(--color-bg-primary)"
+                stroke={hoveredIdx === index ? 'var(--color-brand-secondary)' : 'var(--color-brand-primary)'}
                 strokeWidth="2"
                 className="transition-all duration-150"
               />
@@ -160,10 +160,10 @@ export const VehicleStatusChart: React.FC = () => {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   const data = [
-    { label: 'Available', value: 4, color: 'var(--color-success)', colorBg: 'rgba(34, 197, 94, 0.15)' },
-    { label: 'On Trip', value: 3, color: 'var(--color-secondary)', colorBg: 'rgba(59, 130, 246, 0.15)' },
-    { label: 'In Shop', value: 1, color: 'var(--color-warning)', colorBg: 'rgba(245, 158, 11, 0.15)' },
-    { label: 'Retired', value: 1, color: 'var(--color-danger)', colorBg: 'rgba(239, 68, 68, 0.15)' }
+    { label: 'Available', value: 4, color: 'var(--color-brand-success)', colorBg: 'rgba(34, 197, 94, 0.15)' },
+    { label: 'On Trip', value: 3, color: 'var(--color-brand-secondary)', colorBg: 'rgba(59, 130, 246, 0.15)' },
+    { label: 'In Shop', value: 1, color: 'var(--color-brand-warning)', colorBg: 'rgba(245, 158, 11, 0.15)' },
+    { label: 'Retired', value: 1, color: 'var(--color-brand-danger)', colorBg: 'rgba(239, 68, 68, 0.15)' }
   ];
 
   const total = data.reduce((sum, item) => sum + item.value, 0);
@@ -186,7 +186,7 @@ export const VehicleStatusChart: React.FC = () => {
             cy={size / 2}
             r={radius}
             fill="transparent"
-            stroke="var(--color-border)"
+            stroke="var(--color-border-primary)"
             strokeWidth={strokeWidth}
           />
           {data.map((item, index) => {
@@ -315,7 +315,7 @@ export const FuelUsageChart: React.FC = () => {
               />
               {/* Actual Filled Bar */}
               <div
-                className={`h-full bg-gradient-to-r from-amber-500 to-blue-500 rounded-full transition-all duration-500 ${
+                className={`h-full bg-gradient-to-r from-brand-primary to-brand-secondary rounded-full transition-all duration-500 ${
                   isHovered ? 'brightness-110 shadow-lg' : ''
                 }`}
                 style={{ width: `${percentActual}%` }}
@@ -378,7 +378,7 @@ export const MaintenanceTrendsChart: React.FC = () => {
                 y1={y}
                 x2={width - paddingRight}
                 y2={y}
-                stroke="var(--color-border)"
+                stroke="var(--color-border-primary)"
                 strokeWidth="1"
                 strokeDasharray="2 2"
               />
@@ -406,7 +406,7 @@ export const MaintenanceTrendsChart: React.FC = () => {
         <path
           d={linePath}
           fill="none"
-          stroke="var(--color-primary)"
+          stroke="var(--color-brand-primary)"
           strokeWidth="2.5"
           className="transition-all"
         />
@@ -414,7 +414,7 @@ export const MaintenanceTrendsChart: React.FC = () => {
         {/* Points */}
         {points.map((p, idx) => (
           <g key={idx}>
-            <circle cx={p.x} cy={p.y} r="4" fill="var(--color-bg)" stroke="var(--color-primary)" strokeWidth="2.5" />
+            <circle cx={p.x} cy={p.y} r="4" fill="var(--color-bg-primary)" stroke="var(--color-brand-primary)" strokeWidth="2.5" />
             <text
               x={p.x}
               y={p.y - 8}

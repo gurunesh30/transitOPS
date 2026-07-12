@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { Search, Sparkles, Truck, User as UserIcon, Settings, CornerDownLeft, Star, Clock, X } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { Badge } from '../components/ui/Badge';
 
 export const CommandPalette: React.FC = () => {
   const {
@@ -107,7 +109,6 @@ export const CommandPalette: React.FC = () => {
       result.action();
     } else if (result.type === 'vehicle') {
       setActivePage('vehicles');
-      // For vehicle details drawer, we will highlight or select the vehicle in that view
       addToast(`Navigating to vehicle ${result.item.model}`, 'info');
     } else if (result.type === 'driver') {
       setActivePage('drivers');
@@ -137,13 +138,14 @@ export const CommandPalette: React.FC = () => {
               setSelectedIndex(0);
             }}
           />
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={() => setCtrlKOpen(false)}
-            className="shrink-0 p-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white/40 hover:text-white transition-all"
-            title="Close"
+            aria-label="Close"
           >
             <X className="w-4 h-4" />
-          </button>
+          </Button>
         </div>
 
         {/* Search Results / Recents Dashboard */}
@@ -154,27 +156,28 @@ export const CommandPalette: React.FC = () => {
               {favorites.length > 0 && (
                 <div>
                   <div className="flex items-center gap-1.5 px-3 py-1 text-xs font-semibold text-white/40 uppercase tracking-wider">
-                    <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                    <Star className="w-3.5 h-3.5 text-brand-primary fill-brand-primary" />
                     <span>Favorite Vehicles</span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 mt-2">
                     {vehicles.filter(v => favorites.includes(v.id)).map(v => (
-                      <button
+                      <Button
                         key={v.id}
+                        variant="ghost"
+                        className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-left group border border-white/5 hover:border-white/15 justify-start"
                         onClick={() => {
                           setActivePage('vehicles');
                           setCtrlKOpen(false);
                         }}
-                        className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-left group border border-white/5 hover:border-white/15"
                       >
-                        <div className="p-1.5 rounded bg-amber-500/10 text-amber-500 shrink-0">
+                        <div className="p-1.5 rounded bg-brand-primary/10 text-brand-primary shrink-0">
                           <Truck className="w-4 h-4" />
                         </div>
                         <div className="overflow-hidden">
                           <p className="text-sm font-semibold text-white truncate">{v.model}</p>
                           <p className="text-xs text-white/50 font-mono truncate">{v.registration_number}</p>
                         </div>
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 </div>
@@ -184,36 +187,37 @@ export const CommandPalette: React.FC = () => {
               {recentViews.length > 0 ? (
                 <div>
                   <div className="flex items-center gap-1.5 px-3 py-1 text-xs font-semibold text-white/40 uppercase tracking-wider">
-                    <Clock className="w-3.5 h-3.5 text-blue-400" />
+                    <Clock className="w-3.5 h-3.5 text-brand-secondary" />
                     <span>Recently Viewed</span>
                   </div>
                   <div className="space-y-1 mt-2">
                     {recentViews.map((item, idx) => (
-                      <button
+                      <Button
                         key={`${item.type}_${item.id}_${idx}`}
+                        variant="ghost"
+                        className="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-white/0 hover:bg-white/5 transition-colors text-left"
                         onClick={() => {
                           setActivePage(item.type === 'vehicle' ? 'vehicles' : 'drivers');
                           setCtrlKOpen(false);
                         }}
-                        className="flex items-center justify-between w-full px-3 py-2 rounded-xl bg-white/0 hover:bg-white/5 transition-colors text-left"
                       >
                         <div className="flex items-center gap-3">
                           {item.type === 'vehicle' ? (
-                            <Truck className="w-4 h-4 text-emerald-500" />
+                            <Truck className="w-4 h-4 text-brand-success" />
                           ) : (
-                            <UserIcon className="w-4 h-4 text-blue-400" />
+                            <UserIcon className="w-4 h-4 text-brand-secondary" />
                           )}
                           <span className="text-sm font-medium text-white/80">{item.name}</span>
-                          <span className="text-xs bg-white/5 px-2 py-0.5 rounded text-white/40 capitalize">{item.type}</span>
+                          <Badge variant="outline" size="sm" className="capitalize">{item.type}</Badge>
                         </div>
                         <span className="text-xs text-white/30">{item.timestamp}</span>
-                      </button>
+                      </Button>
                     ))}
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-6 text-white/30 text-sm">
-                  Type something to search, or press <span className="font-mono text-white/60">Ctrl + K</span> again to close.
+                <div className="text-center py-6 text-white/30">
+                  <p className="text-sm font-semibold">Type something to search, or press <span className="font-mono text-white/60">Ctrl + K</span> again to close.</p>
                 </div>
               )}
             </div>
@@ -228,16 +232,16 @@ export const CommandPalette: React.FC = () => {
                       onClick={() => triggerAction(result)}
                       className={`flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer transition-all ${
                         isSelected
-                          ? 'bg-gradient-to-r from-amber-500/20 to-blue-500/20 border border-white/10 text-white pl-4'
+                          ? 'bg-gradient-to-r from-brand-primary/20 to-brand-secondary/20 border border-white/10 text-white pl-4'
                           : 'hover:bg-white/5 text-white/70 border border-transparent'
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        {result.category === 'Navigation' && <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />}
-                        {result.category === 'Settings' && <Settings className="w-4 h-4 text-blue-400 shrink-0" />}
-                        {result.category === 'Simulation' && <Settings className="w-4 h-4 text-red-400 shrink-0" />}
-                        {result.category === 'Vehicles' && <Truck className="w-4 h-4 text-emerald-400 shrink-0" />}
-                        {result.category === 'Drivers' && <UserIcon className="w-4 h-4 text-blue-400 shrink-0" />}
+                        {result.category === 'Navigation' && <Sparkles className="w-4 h-4 text-brand-primary shrink-0" />}
+                        {result.category === 'Settings' && <Settings className="w-4 h-4 text-brand-secondary shrink-0" />}
+                        {result.category === 'Simulation' && <Settings className="w-4 h-4 text-brand-danger shrink-0" />}
+                        {result.category === 'Vehicles' && <Truck className="w-4 h-4 text-brand-success shrink-0" />}
+                        {result.category === 'Drivers' && <UserIcon className="w-4 h-4 text-brand-secondary shrink-0" />}
                         
                         <div className="min-w-0">
                           <p className="text-sm font-medium truncate">{result.label}</p>
@@ -273,12 +277,9 @@ export const CommandPalette: React.FC = () => {
             <span className="flex items-center gap-1">
               <span className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-mono">Enter</span> Select
             </span>
-            <button
-              onClick={() => setCtrlKOpen(false)}
-              className="bg-white/5 hover:bg-white/10 active:bg-white/20 text-white/70 hover:text-white px-2 py-0.5 rounded text-[10px] border border-white/10 transition-all"
-            >
+            <Button variant="ghost" size="sm" className="bg-white/5 hover:bg-white/10 active:bg-white/20 text-white/70 hover:text-white px-2 py-0.5 rounded text-[10px] border border-white/10 transition-all" onClick={() => setCtrlKOpen(false)}>
               Close
-            </button>
+            </Button>
           </div>
           <div>
             TransitOps Command Palette

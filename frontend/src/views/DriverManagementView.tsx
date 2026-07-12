@@ -22,6 +22,13 @@ import {
   TrendingDown,
   TrendingUp
 } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Select } from '../components/ui/Select';
+import { Textarea } from '../components/ui/Textarea';
+import { Card } from '../components/ui/Card';
+import { Badge } from '../components/ui/Badge';
+import { StatusBadge } from '../components/common/StatusBadge';
 
 export const DriverManagementView: React.FC = () => {
   const {
@@ -35,7 +42,7 @@ export const DriverManagementView: React.FC = () => {
   } = useApp();
 
   // Filter/layout states
-  const [layoutMode, setLayoutMode] = useState<'table' | 'card' | 'grid'>('table');
+  const [layoutMode, setLayoutMode] = useState<'table' | 'card'>('table');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   
@@ -232,33 +239,29 @@ export const DriverManagementView: React.FC = () => {
         {/* Global actions */}
         <div className="flex items-center gap-3">
           <div className="flex items-center rounded-xl bg-white/5 border border-white/10 p-0.5">
-            <button
+            <Button
+              variant={layoutMode === 'table' ? 'primary' : 'ghost'}
+              size="sm"
+              className="p-2"
               onClick={() => setLayoutMode('table')}
-              className={`p-2 rounded-lg transition-all ${
-                layoutMode === 'table' ? 'bg-amber-500 text-white' : 'text-white/50 hover:text-white'
-              }`}
               title="Table View"
             >
               <List className="w-4 h-4" />
-            </button>
-            <button
+            </Button>
+            <Button
+              variant={layoutMode === 'card' ? 'primary' : 'ghost'}
+              size="sm"
+              className="p-2"
               onClick={() => setLayoutMode('card')}
-              className={`p-2 rounded-lg transition-all ${
-                layoutMode === 'card' ? 'bg-amber-500 text-white' : 'text-white/50 hover:text-white'
-              }`}
               title="Card View"
             >
               <Grid className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
 
-          <button
-            onClick={() => setIsAddModalOpen(true)}
-            className="px-4 py-2.5 rounded-xl btn-primary transition-all flex items-center gap-1.5 text-xs"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Onboard Operator</span>
-          </button>
+          <Button onClick={() => setIsAddModalOpen(true)} leftIcon={<Plus className="w-4 h-4" />}>
+            Onboard Operator
+          </Button>
         </div>
       </div>
 
@@ -268,16 +271,22 @@ export const DriverManagementView: React.FC = () => {
           <div className="text-xs font-bold text-white/40 uppercase tracking-wider">Active HR Compliance Audits</div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {complianceAlerts.map(alert => {
-              const border = alert.type === 'danger' ? 'border-red-500/20 bg-red-500/10' : 'border-amber-500/20 bg-amber-500/10';
-              const text = alert.type === 'danger' ? 'text-red-400' : 'text-amber-400';
+              const isDanger = alert.type === 'danger';
               return (
-                <div key={alert.id} className={`p-4 border rounded-2xl flex items-start gap-3.5 ${border} animate-scale-up`}>
-                  <AlertTriangle className={`w-5 h-5 shrink-0 mt-0.5 ${text}`} />
-                  <div className="text-xs space-y-0.5">
-                    <p className="font-bold text-white">{alert.message}</p>
-                    <p className="text-white/60 leading-relaxed text-[10px]">{alert.sub}</p>
+                <Card
+                  key={alert.id}
+                  variant="outlined"
+                  padding="md"
+                  className={isDanger ? 'border-brand-danger/20 bg-brand-danger/5' : 'border-brand-warning/20 bg-brand-warning/5'}
+                >
+                  <div className="flex items-start gap-3.5">
+                    <AlertTriangle className={`w-5 h-5 shrink-0 mt-0.5 ${isDanger ? 'text-brand-danger' : 'text-brand-warning'}`} />
+                    <div className="text-xs space-y-0.5">
+                      <p className="font-bold text-white">{alert.message}</p>
+                      <p className="text-white/60 leading-relaxed text-[10px]">{alert.sub}</p>
+                    </div>
                   </div>
-                </div>
+                </Card>
               );
             })}
           </div>
@@ -285,34 +294,35 @@ export const DriverManagementView: React.FC = () => {
       )}
 
       {/* Filters Toolbar */}
-      <div className="theme-card bg-[#1B1E24]/60 backdrop-blur-md p-4 border border-[#2A2E36] rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <Card variant="outlined" padding="md" className="bg-bg-secondary/60 backdrop-blur-md border-border-primary flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
-          <input
-            type="text"
+          <Input
             placeholder="Search driver by name or license..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full theme-input pl-10 pr-4 py-2 text-xs focus:ring-2 focus:ring-amber-500"
+            leftIcon={<Search className="w-4 h-4" />}
+            className="w-full"
           />
         </div>
 
-        <select
+        <Select
           value={statusFilter}
           onChange={e => setStatusFilter(e.target.value)}
-          className="theme-input px-3 py-2 text-xs shrink-0"
-        >
-          <option value="All">All Operating States</option>
-          <option value="Available">Available</option>
-          <option value="On Trip">On Trip</option>
-          <option value="Off Duty">Off Duty</option>
-          <option value="Suspended">Suspended</option>
-        </select>
-      </div>
+          options={[
+            { value: 'All', label: 'All Operating States' },
+            { value: 'Available', label: 'Available' },
+            { value: 'On Trip', label: 'On Trip' },
+            { value: 'Off Duty', label: 'Off Duty' },
+            { value: 'Suspended', label: 'Suspended' }
+          ]}
+          className="w-auto min-w-[180px] shrink-0"
+        />
+      </Card>
 
       {/* LAYOUT 1: TABLE VIEW */}
       {layoutMode === 'table' ? (
-        <div className="theme-card bg-[#1B1E24]/65 backdrop-blur-md border border-[#2A2E36] rounded-2xl overflow-hidden">
+        <Card variant="elevated" padding="none" className="overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
@@ -330,17 +340,10 @@ export const DriverManagementView: React.FC = () => {
               <tbody>
                 {filteredDrivers.length > 0 ? (
                   filteredDrivers.map(driver => {
-                    const badgeMap = {
-                      Available: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-                      'On Trip': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-                      'Off Duty': 'bg-slate-500/10 text-slate-400 border-slate-500/20',
-                      Suspended: 'bg-red-500/10 text-red-400 border-red-500/20'
-                    };
-
                     const safetyTrend = driver.safety_score >= 90 ? (
-                      <TrendingUp className="w-3.5 h-3.5 text-emerald-500 ml-1 shrink-0" />
+                      <TrendingUp className="w-3.5 h-3.5 text-brand-success ml-1 shrink-0" />
                     ) : (
-                      <TrendingDown className="w-3.5 h-3.5 text-red-500 ml-1 shrink-0" />
+                      <TrendingDown className="w-3.5 h-3.5 text-brand-danger ml-1 shrink-0" />
                     );
 
                     return (
@@ -355,7 +358,7 @@ export const DriverManagementView: React.FC = () => {
                             {driver.photo ? (
                               <img src={driver.photo} alt={driver.name} className="w-full h-full object-cover" />
                             ) : (
-                              <div className="w-full h-full bg-gradient-to-tr from-amber-500 to-blue-500 flex items-center justify-center font-bold text-white text-xs">
+                              <div className="w-full h-full bg-gradient-to-tr from-brand-primary to-brand-secondary flex items-center justify-center font-bold text-white text-xs">
                                 {driver.name.split(' ').map(n => n[0]).join('')}
                               </div>
                             )}
@@ -394,22 +397,18 @@ export const DriverManagementView: React.FC = () => {
 
                         {/* Status */}
                         <td className="p-4">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${badgeMap[driver.status] || 'bg-slate-500/10'}`}>
-                            {driver.status}
-                          </span>
+                          <StatusBadge status={driver.status} size="sm" dot />
                         </td>
 
                         {/* Actions */}
                         <td className="p-4" onClick={e => e.stopPropagation()}>
                           <div className="flex items-center justify-end gap-1.5">
-                            <button
-                              onClick={() => handleOpenDrawer(driver)}
-                              className="p-1.5 rounded hover:bg-white/5 text-white/50 hover:text-white transition-colors"
-                              title="Audit Profile"
-                            >
+                            <Button variant="ghost" size="icon" onClick={() => handleOpenDrawer(driver)} aria-label="Audit Profile">
                               <Eye className="w-4 h-4" />
-                            </button>
-                            <button
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
                               onClick={() => {
                                 const confirmDelete = window.confirm(`Delete driver profile for ${driver.name}?`);
                                 if (confirmDelete) {
@@ -418,11 +417,10 @@ export const DriverManagementView: React.FC = () => {
                                   addLog('driver', `Removed driver ${driver.name} from active contractor database.`, 'danger');
                                 }
                               }}
-                              className="p-1.5 rounded hover:bg-white/5 text-white/30 hover:text-red-400 transition-colors"
-                              title="Delete profile"
+                              aria-label="Delete profile"
                             >
                               <Trash2 className="w-4 h-4" />
-                            </button>
+                            </Button>
                           </div>
                         </td>
                       </tr>
@@ -442,68 +440,60 @@ export const DriverManagementView: React.FC = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </Card>
       ) : (
         /* LAYOUT 2: CARDS GRID VIEW */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredDrivers.length > 0 ? (
-            filteredDrivers.map(driver => {
-              const badgeMap = {
-                Available: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-                'On Trip': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-                'Off Duty': 'bg-slate-500/10 text-slate-400 border-slate-500/20',
-                Suspended: 'bg-red-500/10 text-red-400 border-red-500/20'
-              };
-
-              return (
-                <div
-                  key={driver.id}
-                  onClick={() => handleOpenDrawer(driver)}
-                  className="theme-card p-5 bg-[#1B1E24]/65 backdrop-blur-md border border-[#2A2E36] rounded-2xl space-y-4 hover:border-amber-500 transition-all cursor-pointer flex flex-col justify-between"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    {/* Image and basic specs */}
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full overflow-hidden border border-white/10 shrink-0 bg-white/5">
-                        {driver.photo ? (
-                          <img src={driver.photo} alt={driver.name} className="w-full h-full object-cover" />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-tr from-amber-500 to-blue-500 flex items-center justify-center font-bold text-white text-xs">
-                            {driver.name.split(' ').map(n => n[0]).join('')}
-                          </div>
-                        )}
-                      </div>
-                      <div className="text-xs">
-                        <h3 className="font-bold text-white text-sm">{driver.name}</h3>
-                        <p className="text-white/40 font-mono mt-0.5">{driver.license_category}</p>
-                      </div>
+            filteredDrivers.map(driver => (
+              <Card
+                key={driver.id}
+                variant="default"
+                padding="lg"
+                hoverable
+                onClick={() => handleOpenDrawer(driver)}
+                className="space-y-4 flex flex-col justify-between"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  {/* Image and basic specs */}
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full overflow-hidden border border-white/10 shrink-0 bg-white/5">
+                      {driver.photo ? (
+                        <img src={driver.photo} alt={driver.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-tr from-brand-primary to-brand-secondary flex items-center justify-center font-bold text-white text-xs">
+                          {driver.name.split(' ').map(n => n[0]).join('')}
+                        </div>
+                      )}
                     </div>
-
-                    <span className={`px-2 py-0.5 rounded text-[9px] font-bold border ${badgeMap[driver.status] || 'bg-slate-500/10'}`}>
-                      {driver.status}
-                    </span>
-                  </div>
-
-                  {/* Safety rating stats */}
-                  <div className="flex items-center justify-between p-3 bg-black/15 rounded-xl border border-white/5">
-                    <div className="text-[10px]">
-                      <p className="text-white/40 uppercase font-semibold">Safety Telemetry</p>
-                      <p className="text-white font-bold mt-0.5">Rating: {driver.safety_score}%</p>
+                    <div className="text-xs">
+                      <h3 className="font-bold text-white text-sm">{driver.name}</h3>
+                      <p className="text-white/40 font-mono mt-0.5">{driver.license_category}</p>
                     </div>
-                    {renderSafetyScoreCircle(driver.safety_score)}
                   </div>
 
-                  {/* License Expiry warning inside card */}
-                  <div className="flex items-center justify-between text-[10px] text-white/50">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-white/30" />
-                      <span>Exp: {driver.license_expiry_date}</span>
-                    </span>
-                    <span className="font-mono">{driver.experience} Yrs Exp</span>
-                  </div>
+                  <StatusBadge status={driver.status} size="sm" />
                 </div>
-              );
-            })
+
+                {/* Safety rating stats */}
+                <div className="flex items-center justify-between p-3 bg-black/15 rounded-xl border border-white/5">
+                  <div className="text-[10px]">
+                    <p className="text-white/40 uppercase font-semibold">Safety Telemetry</p>
+                    <p className="text-white font-bold mt-0.5">Rating: {driver.safety_score}%</p>
+                  </div>
+                  {renderSafetyScoreCircle(driver.safety_score)}
+                </div>
+
+                {/* License Expiry warning inside card */}
+                <div className="flex items-center justify-between text-[10px] text-white/50">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5 text-white/30" />
+                    <span>Exp: {driver.license_expiry_date}</span>
+                  </span>
+                  <span className="font-mono">{driver.experience} Yrs Exp</span>
+                </div>
+              </Card>
+            ))
           ) : (
             <div className="col-span-3 py-12 text-center text-white/30 text-sm">
               <div className="flex flex-col items-center gap-3">
@@ -517,7 +507,7 @@ export const DriverManagementView: React.FC = () => {
 
       {/* Driver Profile Drawer Panel */}
       {selectedDriver && (
-        <div className="fixed inset-y-0 right-0 w-full max-w-lg z-50 bg-[#1B1E24] border-l border-white/10 shadow-2xl flex flex-col animate-slide-in">
+        <div className="fixed inset-y-0 right-0 w-full max-w-lg z-50 bg-bg-secondary border-l border-white/10 shadow-2xl flex flex-col animate-slide-in">
           {/* Drawer Header */}
           <div className="p-5 border-b border-white/5 flex items-center justify-between bg-black/15">
             <div className="flex items-center gap-3">
@@ -529,26 +519,23 @@ export const DriverManagementView: React.FC = () => {
                 <p className="text-[10px] text-white/40 font-mono mt-0.5">{selectedDriver.license_category}</p>
               </div>
             </div>
-            <button
-              onClick={() => setSelectedDriver(null)}
-              className="text-white/40 hover:text-white p-1 rounded hover:bg-white/5 transition-colors"
-            >
+            <Button variant="ghost" size="icon" onClick={() => setSelectedDriver(null)}>
               <X className="w-5 h-5" />
-            </button>
+            </Button>
           </div>
 
           {/* Drawer Tabs */}
           <div className="flex items-center border-b border-white/5 bg-black/10 p-1 px-4 overflow-x-auto shrink-0">
             {(['profile', 'violations', 'documents', 'contact'] as const).map(tab => (
-              <button
+              <Button
                 key={tab}
+                variant={activeDrawerTab === tab ? 'primary' : 'ghost'}
+                size="sm"
+                className="px-3 py-2 rounded-lg text-xs font-bold uppercase shrink-0"
                 onClick={() => setActiveDrawerTab(tab)}
-                className={`px-3 py-2 rounded-lg text-xs font-bold uppercase transition-all shrink-0 ${
-                  activeDrawerTab === tab ? 'text-amber-500 bg-white/5' : 'text-white/40 hover:text-white/70'
-                }`}
               >
                 {tab}
-              </button>
+              </Button>
             ))}
           </div>
 
@@ -560,25 +547,27 @@ export const DriverManagementView: React.FC = () => {
               <div className="space-y-5 animate-fade-in">
                 {/* Specs grids */}
                 <div className="grid grid-cols-2 gap-3.5">
-                  <div className="p-3 bg-white/2 border border-white/5 rounded-xl">
+                  <Card variant="outlined" padding="md" className="bg-white/2 border-white/5">
                     <p className="text-white/40 uppercase text-[9px] font-bold">Safety rating</p>
                     <div className="flex items-center gap-2 mt-1">
                       <p className="text-base font-bold text-white">{selectedDriver.safety_score}%</p>
-                      <span className={`px-1.5 py-0.5 text-[9px] rounded font-bold ${
-                        selectedDriver.safety_score >= 90 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'
-                      }`}>
+                      <Badge
+                        variant={selectedDriver.safety_score >= 90 ? 'success' : 'danger'}
+                        size="sm"
+                        className="px-1.5 py-0.5 text-[9px]"
+                      >
                         {selectedDriver.safety_score >= 90 ? 'Excellent' : 'Needs Retraining'}
-                      </span>
+                      </Badge>
                     </div>
-                  </div>
-                  <div className="p-3 bg-white/2 border border-white/5 rounded-xl">
+                  </Card>
+                  <Card variant="outlined" padding="md" className="bg-white/2 border-white/5">
                     <p className="text-white/40 uppercase text-[9px] font-bold">Total completed loops</p>
                     <p className="text-base font-bold text-white mt-1">{selectedDriver.completed_trips} trips</p>
-                  </div>
+                  </Card>
                 </div>
 
                 {/* Personal specs */}
-                <div className="space-y-3.5 p-4 bg-white/2 border border-white/5 rounded-xl">
+                <Card variant="outlined" padding="lg" className="bg-white/2 border-white/5">
                   <h4 className="font-bold text-white text-xs border-b border-white/5 pb-2">Employment telemetry</h4>
                   <div className="grid grid-cols-2 gap-y-3 gap-x-2">
                     <div>
@@ -598,12 +587,12 @@ export const DriverManagementView: React.FC = () => {
                       <p className="text-white font-semibold font-mono mt-0.5">{selectedDriver.blood_group}</p>
                     </div>
                   </div>
-                </div>
+                </Card>
 
                 {/* Notes */}
                 <div className="space-y-2">
                   <p className="text-[10px] text-white/40 font-bold uppercase tracking-wider">Internal dispatcher notes</p>
-                  <p className="p-3 bg-[#0F1115] border border-white/5 rounded-xl text-white/60 leading-relaxed">
+                  <p className="p-3 bg-bg-primary border border-white/5 rounded-xl text-white/60 leading-relaxed">
                     {selectedDriver.notes || 'No administrative logs attached to this node.'}
                   </p>
                 </div>
@@ -617,14 +606,14 @@ export const DriverManagementView: React.FC = () => {
 
                 {selectedDriver.violation_history.length > 0 ? (
                   selectedDriver.violation_history.map(v => (
-                    <div key={v.id} className="p-3 bg-red-500/5 border border-red-500/10 rounded-xl flex items-center justify-between">
+                    <div key={v.id} className="p-3 bg-brand-danger/5 border border-brand-danger/10 rounded-xl flex items-center justify-between">
                       <div>
                         <p className="font-bold text-white">{v.type}</p>
                         <p className="text-[10px] text-white/40 font-mono mt-0.5">{v.date}</p>
                       </div>
-                      <span className="px-2 py-0.5 rounded text-[9px] bg-red-500/10 text-red-400 font-bold font-mono">
+                      <Badge variant="danger" size="sm" className="px-2 py-0.5 text-[9px] font-mono font-bold">
                         +{v.points} CDL Points
-                      </span>
+                      </Badge>
                     </div>
                   ))
                 ) : (
@@ -645,9 +634,9 @@ export const DriverManagementView: React.FC = () => {
                 <div className="space-y-2.5">
                   {selectedDriver.documents.map((doc, idx) => {
                     const iconMap = {
-                      valid: <CheckCircle className="w-5 h-5 text-emerald-400" />,
-                      missing: <AlertTriangle className="w-5 h-5 text-red-500" />,
-                      expiring: <Clock className="w-5 h-5 text-amber-500" />
+                      valid: <CheckCircle className="w-5 h-5 text-brand-success" />,
+                      missing: <AlertTriangle className="w-5 h-5 text-brand-danger" />,
+                      expiring: <Clock className="w-5 h-5 text-brand-warning" />
                     };
                     return (
                       <div key={idx} className="p-3.5 bg-white/2 border border-white/5 rounded-xl flex items-center justify-between">
@@ -673,7 +662,7 @@ export const DriverManagementView: React.FC = () => {
               <div className="space-y-4 animate-fade-in">
                 <h4 className="font-bold text-white text-sm">Emergency & Communications</h4>
                 
-                <div className="p-4 bg-white/2 border border-white/5 rounded-xl space-y-3.5">
+                <Card variant="outlined" padding="lg" className="bg-white/2 border-white/5 space-y-3.5">
                   <div className="flex items-center gap-3.5">
                     <Phone className="w-4 h-4 text-white/40" />
                     <div>
@@ -697,11 +686,11 @@ export const DriverManagementView: React.FC = () => {
                       <p className="text-white font-semibold leading-relaxed">{selectedDriver.address}</p>
                     </div>
                   </div>
-                </div>
+                </Card>
 
-                <div className="p-4 bg-white/2 border border-red-500/10 rounded-xl space-y-1 bg-red-500/2">
+                <div className="p-4 bg-white/2 border border-brand-danger/10 rounded-xl space-y-1 bg-brand-danger/2">
                   <div className="flex items-center gap-2">
-                    <Heart className="w-4 h-4 text-red-500 shrink-0" />
+                    <Heart className="w-4 h-4 text-brand-danger shrink-0" />
                     <p className="font-bold text-white">Emergency Contact</p>
                   </div>
                   <p className="text-white/70 font-semibold leading-relaxed mt-1 text-[11px]">
@@ -715,7 +704,9 @@ export const DriverManagementView: React.FC = () => {
 
           {/* Drawer Actions */}
           <div className="p-5 border-t border-white/5 flex gap-2.5 bg-black/15 shrink-0">
-            <button
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => {
                 const nextStatus = selectedDriver.status === 'Suspended' ? 'Available' : 'Suspended';
                 setDrivers(prev =>
@@ -725,16 +716,17 @@ export const DriverManagementView: React.FC = () => {
                 addToast(`Driver ${selectedDriver.name} is now ${nextStatus}`, 'warning');
                 addLog('driver', `Dispatcher overridden: ${selectedDriver.name} set to ${nextStatus}`, 'warning');
               }}
-              className="px-4 py-2.5 rounded-xl border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-xs font-semibold text-white transition-colors"
             >
               {selectedDriver.status === 'Suspended' ? 'Unsuspend Driver' : 'Suspend Road Dispatches'}
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
+              className="flex-1"
               onClick={() => addToast('Simulating: Dispatch medical certification audit request.', 'info')}
-              className="flex-1 py-2.5 rounded-xl btn-primary text-xs"
             >
               Request Document Audit
-            </button>
+            </Button>
           </div>
         </div>
       )}
@@ -742,7 +734,7 @@ export const DriverManagementView: React.FC = () => {
       {/* Onboard Driver Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-xl overflow-hidden bg-[#1B1E24] border border-white/10 shadow-2xl rounded-2xl flex flex-col animate-scale-up">
+          <div className="w-full max-w-xl overflow-hidden bg-bg-secondary border border-white/10 shadow-2xl rounded-2xl flex flex-col animate-scale-up">
             
             {/* Modal Header */}
             <div className="p-5 border-b border-white/5 flex items-center justify-between">
@@ -750,9 +742,9 @@ export const DriverManagementView: React.FC = () => {
                 <h3 className="text-base font-bold text-white">Onboard Transit Operator</h3>
                 <p className="text-[10px] text-white/50 font-medium">Add driver profile to the corporate database network</p>
               </div>
-              <button onClick={() => setIsAddModalOpen(false)} className="text-white/40 hover:text-white p-1">
+              <Button variant="ghost" size="icon" onClick={() => setIsAddModalOpen(false)}>
                 <X className="w-5 h-5" />
-              </button>
+              </Button>
             </div>
 
             {/* Modal Form content */}
@@ -770,151 +762,118 @@ export const DriverManagementView: React.FC = () => {
               {/* Form grids */}
               <div className="grid grid-cols-2 gap-4 text-xs">
                 {/* Full name */}
-                <div className="space-y-1">
-                  <label className="font-semibold text-white/60">Full Name*</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Sarah Connor"
-                    value={formName}
-                    onChange={e => setFormName(e.target.value)}
-                    className="w-full theme-input p-2.5"
-                  />
-                </div>
+                <Input
+                  label="Full Name*"
+                  required
+                  placeholder="e.g. Sarah Connor"
+                  value={formName}
+                  onChange={e => setFormName(e.target.value)}
+                />
 
                 {/* Email */}
-                <div className="space-y-1">
-                  <label className="font-semibold text-white/60">Work Email*</label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="e.g. sarah@transitops.com"
-                    value={formEmail}
-                    onChange={e => setFormEmail(e.target.value)}
-                    className="w-full theme-input p-2.5 font-mono"
-                  />
-                </div>
+                <Input
+                  label="Work Email*"
+                  type="email"
+                  required
+                  placeholder="e.g. sarah@transitops.com"
+                  value={formEmail}
+                  onChange={e => setFormEmail(e.target.value)}
+                />
 
                 {/* License category */}
-                <div className="space-y-1">
-                  <label className="font-semibold text-white/60">License Classification</label>
-                  <select
-                    value={formCategory}
-                    onChange={e => setFormCategory(e.target.value)}
-                    className="w-full theme-input p-2.5 font-medium"
-                  >
-                    <option value="Class A CDL">Class A CDL (Heavy tractor-trailer)</option>
-                    <option value="Class B CDL">Class B CDL (Single-unit box truck)</option>
-                    <option value="Class C CDL">Class C CDL (Local van driver)</option>
-                  </select>
-                </div>
+                <Select
+                  label="License Classification"
+                  value={formCategory}
+                  onChange={e => setFormCategory(e.target.value)}
+                  options={[
+                    { value: 'Class A CDL', label: 'Class A CDL (Heavy tractor-trailer)' },
+                    { value: 'Class B CDL', label: 'Class B CDL (Single-unit box truck)' },
+                    { value: 'Class C CDL', label: 'Class C CDL (Local van driver)' }
+                  ]}
+                />
 
                 {/* License Number */}
-                <div className="space-y-1">
-                  <label className="font-semibold text-white/60">CDL License Number*</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="CDL-TX-00000"
-                    value={formLicenseNo}
-                    onChange={e => setFormLicenseNo(e.target.value)}
-                    className="w-full theme-input p-2.5 font-mono"
-                  />
-                </div>
+                <Input
+                  label="CDL License Number*"
+                  required
+                  placeholder="CDL-TX-00000"
+                  value={formLicenseNo}
+                  onChange={e => setFormLicenseNo(e.target.value)}
+                />
 
                 {/* CDL Expiry Date */}
                 <div className="space-y-1">
                   <label className="font-semibold text-white/60">CDL Expiry Date*</label>
-                  <input
+                  <Input
                     type="date"
                     required
                     value={formExpiryDate}
                     onChange={e => setFormExpiryDate(e.target.value)}
-                    className="w-full theme-input p-2.5 text-white/60"
                   />
                 </div>
 
                 {/* Phone */}
-                <div className="space-y-1">
-                  <label className="font-semibold text-white/60">Contact Number*</label>
-                  <input
-                    type="tel"
-                    required
-                    placeholder="+1 (555) 000-0000"
-                    value={formPhone}
-                    onChange={e => setFormPhone(e.target.value)}
-                    className="w-full theme-input p-2.5 font-mono"
-                  />
-                </div>
+                <Input
+                  label="Contact Number*"
+                  type="tel"
+                  required
+                  placeholder="+1 (555) 000-0000"
+                  value={formPhone}
+                  onChange={e => setFormPhone(e.target.value)}
+                />
 
                 {/* Experience in years */}
-                <div className="space-y-1">
-                  <label className="font-semibold text-white/60">Years of Experience*</label>
-                  <input
-                    type="number"
-                    required
-                    placeholder="e.g. 5"
-                    value={formExperience}
-                    onChange={e => setFormExperience(e.target.value)}
-                    className="w-full theme-input p-2.5 font-mono"
-                  />
-                </div>
+                <Input
+                  label="Years of Experience*"
+                  type="number"
+                  required
+                  placeholder="e.g. 5"
+                  value={formExperience}
+                  onChange={e => setFormExperience(e.target.value)}
+                />
 
                 {/* Blood group */}
-                <div className="space-y-1">
-                  <label className="font-semibold text-white/60">Blood Group Config</label>
-                  <select
-                    value={formBloodGroup}
-                    onChange={e => setFormBloodGroup(e.target.value)}
-                    className="w-full theme-input p-2.5 font-mono"
-                  >
-                    <option value="O+">O+</option>
-                    <option value="O-">O-</option>
-                    <option value="A+">A+</option>
-                    <option value="A-">A-</option>
-                    <option value="B+">B+</option>
-                    <option value="B-">B-</option>
-                    <option value="AB+">AB+</option>
-                    <option value="AB-">AB-</option>
-                  </select>
-                </div>
+                <Select
+                  label="Blood Group Config"
+                  value={formBloodGroup}
+                  onChange={e => setFormBloodGroup(e.target.value)}
+                  options={[
+                    { value: 'O+', label: 'O+' },
+                    { value: 'O-', label: 'O-' },
+                    { value: 'A+', label: 'A+' },
+                    { value: 'A-', label: 'A-' },
+                    { value: 'B+', label: 'B+' },
+                    { value: 'B-', label: 'B-' },
+                    { value: 'AB+', label: 'AB+' },
+                    { value: 'AB-', label: 'AB-' }
+                  ]}
+                />
               </div>
 
               {/* Emergency Contact */}
-              <div className="space-y-1 text-xs">
-                <label className="font-semibold text-white/60">Emergency Contact Details (Name, Relation, Phone)</label>
-                <input
-                  type="text"
-                  placeholder="e.g. John Connor (Son) - +1 (555) 123-4567"
-                  value={formEmergencyContact}
-                  onChange={e => setFormEmergencyContact(e.target.value)}
-                  className="w-full theme-input p-2.5"
-                />
-              </div>
+              <Input
+                label="Emergency Contact Details (Name, Relation, Phone)"
+                placeholder="e.g. John Connor (Son) - +1 (555) 123-4567"
+                value={formEmergencyContact}
+                onChange={e => setFormEmergencyContact(e.target.value)}
+              />
 
               {/* Home Address */}
-              <div className="space-y-1 text-xs">
-                <label className="font-semibold text-white/60">Home Terminal Address</label>
-                <input
-                  type="text"
-                  placeholder="Street, City, State, ZIP"
-                  value={formAddress}
-                  onChange={e => setFormAddress(e.target.value)}
-                  className="w-full theme-input p-2.5"
-                />
-              </div>
+              <Input
+                label="Home Terminal Address"
+                placeholder="Street, City, State, ZIP"
+                value={formAddress}
+                onChange={e => setFormAddress(e.target.value)}
+              />
 
               {/* Notes */}
-              <div className="space-y-1 text-xs">
-                <label className="font-semibold text-white/60">Compliance & Dispatch Notes</label>
-                <textarea
-                  rows={2}
-                  placeholder="Hazmat certifications, driving restrictions, etc."
-                  value={formNotes}
-                  onChange={e => setFormNotes(e.target.value)}
-                  className="w-full theme-input p-2.5"
-                />
-              </div>
+              <Textarea
+                label="Compliance & Dispatch Notes"
+                rows={2}
+                placeholder="Hazmat certifications, driving restrictions, etc."
+                value={formNotes}
+                onChange={e => setFormNotes(e.target.value)}
+              />
 
             </form>
 
@@ -923,7 +882,7 @@ export const DriverManagementView: React.FC = () => {
               <div className="text-[10px] text-white/40 flex items-center gap-1.5">
                 {autoSaveActive ? (
                   <>
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                    <span className="w-2 h-2 rounded-full bg-brand-success animate-ping" />
                     <span>Auto-saving telemetry config...</span>
                   </>
                 ) : (
@@ -935,25 +894,25 @@ export const DriverManagementView: React.FC = () => {
               </div>
 
               <div className="flex gap-2.5">
-                <button
+                <Button
                   type="button"
+                  variant="outline"
+                  size="sm"
                   onClick={() => {
                     const confirmClose = window.confirm('Discard unsaved operator profile modifications?');
                     if (confirmClose) setIsAddModalOpen(false);
                   }}
-                  className="px-4 py-2 rounded-xl border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-xs font-semibold text-white/80 transition-colors"
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
-                  onClick={handleAddDriverSubmit}
                   disabled={autoSaveActive}
-                  className="px-5 py-2 rounded-xl btn-primary text-xs flex items-center gap-1"
+                  size="sm"
+                  leftIcon={<Plus className="w-3.5 h-3.5" />}
                 >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>Onboard Contractor Node</span>
-                </button>
+                  Onboard Contractor Node
+                </Button>
               </div>
             </div>
 
