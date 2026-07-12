@@ -7,6 +7,8 @@ export const getVehicles = async (req: Request, res: Response) => {
         const cacheKey = 'vehicles:all';
 
         const vehicles = await getOrSetCache(cacheKey, async () => {
+            // Simulate a heavy database query to make cache hit/miss response times distinguishable
+            await new Promise((resolve) => setTimeout(resolve, 300));
             return await prisma.vehicle.findMany({
                 orderBy: { registration_number: 'asc' }
             });

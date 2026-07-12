@@ -3,6 +3,7 @@ import { AuthController } from '../controllers/auth.controller';
 import { FleetController } from '../controllers/fleet.controller';
 import { TripController } from '../controllers/trip.controller';
 import { ReportController } from '../controllers/report.controller';
+import { getVehicles } from '../controllers/vehicleController';
 import { authorizeUser } from '../middleware/auth';
 import { checkPermissions } from '../middleware/rbac';
 
@@ -13,7 +14,7 @@ router.post('/auth/login', AuthController.login);
 
 // Fleet Registry Bounds
 router.post('/vehicles', authorizeUser, checkPermissions(['Fleet_Manager']), FleetController.registerVehicle);
-router.get('/vehicles', authorizeUser, FleetController.queryVehicles);
+router.get('/vehicles', authorizeUser, getVehicles);
 router.post('/drivers', authorizeUser, checkPermissions(['Fleet_Manager', 'Safety_Officer']), FleetController.registerDriver);
 
 // Trip Workflows
