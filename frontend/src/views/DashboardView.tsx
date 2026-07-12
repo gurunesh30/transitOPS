@@ -215,10 +215,12 @@ export const DashboardView: React.FC = () => {
               className="w-full theme-input p-2.5 text-xs"
             >
               <option value="All">All Sectors</option>
+              <option value="North">North</option>
+              <option value="South">South</option>
+              <option value="East">East</option>
+              <option value="West">West</option>
+              <option value="Central">Central</option>
               <option value="North-East">North-East</option>
-              <option value="West-Coast">West-Coast</option>
-              <option value="Mid-West">Mid-West</option>
-              <option value="South-East">South-East</option>
             </select>
           </div>
 
