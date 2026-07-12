@@ -41,7 +41,7 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
 
 Avatar.displayName = 'Avatar';
 
-export const AvatarImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = React.forwardRef(
+export const AvatarImage = React.forwardRef<HTMLImageElement, React.ImgHTMLAttributes<HTMLImageElement>>(
   ({ className = '', ...props }, ref) => {
     return (
       <img
@@ -55,7 +55,7 @@ export const AvatarImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = 
 
 AvatarImage.displayName = 'AvatarImage';
 
-export const AvatarFallback: React.FC<React.HTMLAttributes<HTMLDivElement>> = React.forwardRef(
+export const AvatarFallback = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className = '', ...props }, ref) => {
     return (
       <div ref={ref} className={`w-full h-full ${className}`} {...props} />

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import type { User, UserRole, Trip } from '../types';
 import { mockVehicles, mockDrivers, mockTrips, mockActivityLogs } from '../data/mockData';
 import type { ExtendedVehicle, ExtendedDriver, ActivityLog } from '../data/mockData';
-import { api, setAuthToken, getAuthToken, vehiclesApi, driversApi, tripsApi, reportsApi, authApi } from '../services/api';
+import { setAuthToken, vehiclesApi, driversApi, tripsApi, authApi } from '../services/api';
 
 export interface Toast {
   id: string;

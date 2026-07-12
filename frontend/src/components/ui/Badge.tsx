@@ -7,7 +7,8 @@ export type BadgeVariant =
   | 'danger'
   | 'info'
   | 'primary'
-  | 'neutral';
+  | 'neutral'
+  | 'outline';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: BadgeVariant;
@@ -24,6 +25,7 @@ const variantStyles: Record<BadgeVariant, string> = {
   info: 'bg-brand-info/15 text-brand-info border border-brand-info/20',
   primary: 'bg-brand-primary/15 text-brand-primary border border-brand-primary/20',
   neutral: 'bg-bg-tertiary text-text-muted border border-border-primary',
+  outline: 'bg-transparent text-text-secondary border border-border-primary',
 };
 
 const sizeStyles = {
@@ -60,7 +62,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 
 Badge.displayName = 'Badge';
 
-export interface StatusBadgeProps {
+export interface StatusBadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   status: string;
   size?: 'sm' | 'md' | 'lg';
 }

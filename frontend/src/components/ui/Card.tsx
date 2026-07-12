@@ -4,10 +4,11 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'elevated' | 'outlined' | 'ghost';
   padding?: 'none' | 'sm' | 'md' | 'lg';
   hover?: boolean;
+  hoverable?: boolean;
 }
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ children, variant = 'default', padding = 'md', hover = false, className = '', ...props }, ref) => {
+  ({ children, variant = 'default', padding = 'md', hover = false, hoverable = false, className = '', ...props }, ref) => {
     const variants = {
       default: 'bg-bg-secondary border border-border-primary',
       elevated: 'bg-bg-elevated shadow-lg',
@@ -22,7 +23,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       lg: 'p-6',
     };
 
-    const hoverStyles = hover
+    const hoverStyles = (hover || hoverable)
       ? 'transition-all duration-200 hover:border-brand-primary/50 hover:shadow-brand-primary/10'
       : '';
 
@@ -72,6 +73,18 @@ export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
 );
 
 CardTitle.displayName = 'CardTitle';
+
+export interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+
+export const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionProps>(
+  ({ children, className = '', ...props }, ref) => (
+    <p ref={ref} className={`text-xs text-text-secondary ${className}`} {...props}>
+      {children}
+    </p>
+  )
+);
+
+CardDescription.displayName = 'CardDescription';
 
 export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
 

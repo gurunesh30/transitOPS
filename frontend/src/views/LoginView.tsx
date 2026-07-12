@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
-import { Shield, Eye, EyeOff, AlertTriangle, ArrowRight, Loader } from 'lucide-react';
+import { Shield, Eye, EyeOff, AlertTriangle, ArrowRight, Lock, Mail, Users } from 'lucide-react';
+import { Card, Button, Input, Select } from '../components/ui';
 
 export const LoginView: React.FC = () => {
   const {
-    setCurrentUser,
     selectedRole,
     setSelectedRole,
     failedAttempts,
-    incrementFailedAttempts,
     resetFailedAttempts,
     isLocked,
     addToast,
-    addLog,
     lastLoginTime,
     login,
   } = useApp();
@@ -177,7 +175,7 @@ export const LoginView: React.FC = () => {
               </label>
               <Select
                 value={selectedRole}
-                onChange={(e) => setSelectedRole(e.target.value as any)}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedRole(e.target.value as any)}
                 options={[
                   { value: 'Fleet Manager', label: 'Fleet Manager' },
                   { value: 'Dispatcher', label: 'Dispatcher' },
@@ -193,7 +191,7 @@ export const LoginView: React.FC = () => {
               type="email"
               placeholder="name@transitops.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
               label="Corporate Email"
               leftIcon={<Mail className="w-3.5 h-3.5" />}
               error={emailError}
@@ -221,7 +219,7 @@ export const LoginView: React.FC = () => {
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Enter passkey"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                   rightIcon={
                     <button
                       type="button"

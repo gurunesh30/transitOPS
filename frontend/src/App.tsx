@@ -35,7 +35,7 @@ const AppContent: React.FC = () => {
     return (
       <>
         <LoginView />
-        <ToastContainer toasts={toasts} removeToast={removeToast} />
+        <ToastContainer toasts={toasts} onRemove={removeToast} />
       </>
     );
   }
@@ -218,7 +218,7 @@ const AppContent: React.FC = () => {
       {/* UNIVERSAL OVERLAYS AND SIMULATION MODALS */}
       <CommandPalette />
       <OnboardingTour />
-      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
 
       {/* Simulated Session Expiration popup window modal */}
       {sessionExpired && (
