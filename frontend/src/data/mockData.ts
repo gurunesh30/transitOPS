@@ -1,4 +1,4 @@
-import type { Vehicle, Driver, Trip, MaintenanceLog, FuelLog } from '../types';
+import type { Vehicle, Driver, Trip } from '../types';
 
 // Let's extend the types locally or use intersection types for detailed attributes
 export interface ExtendedVehicle extends Vehicle {
@@ -494,44 +494,5 @@ export const mockActivityLogs: ActivityLog[] = [
     message: 'New Vehicle TN-01-VA-2210 (Ford Transit) added to the registry.',
     status: 'success',
     user: 'Fleet Manager'
-  }
-];
-
-export const mockMaintenanceLogs: MaintenanceLog[] = [
-  {
-    id: 'm1',
-    vehicle_id: 'v3',
-    issue_description: 'Starter Motor Diagnosis',
-    cost: 180,
-    status: 'Open',
-    opened_at: '2026-07-11T10:00:00Z',
-  },
-  {
-    id: 'm2',
-    vehicle_id: 'v1',
-    issue_description: 'Brake Pad Replacement',
-    cost: 1250,
-    status: 'Closed',
-    opened_at: '2026-07-01T08:00:00Z',
-    closed_at: '2026-07-02T16:00:00Z',
-  }
-];
-
-export const mockFuelLogs: FuelLog[] = [
-  {
-    id: 'f1',
-    vehicle_id: 'v1',
-    liters: 300,
-    cost: 450,
-    date: '2026-07-10T08:30:00Z',
-    odometer: 141900,
-  },
-  {
-    id: 'f2',
-    vehicle_id: 'v2',
-    liters: 250,
-    cost: 375,
-    date: '2026-07-08T09:15:00Z',
-    odometer: 98150,
   }
 ];

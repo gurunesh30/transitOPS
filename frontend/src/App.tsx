@@ -4,9 +4,6 @@ import { LoginView } from './views/LoginView';
 import { DashboardView } from './views/DashboardView';
 import { VehicleRegistryView } from './views/VehicleRegistryView';
 import { DriverManagementView } from './views/DriverManagementView';
-import { TripManagementView } from './views/TripManagementView';
-import { MaintenanceView } from './views/MaintenanceView';
-import { FuelLogsView } from './views/FuelLogsView';
 import { CommandPalette } from './components/CommandPalette';
 import { OnboardingTour } from './components/OnboardingTour';
 import { SidebarLayout } from './components/common/SidebarLayout';
@@ -51,12 +48,6 @@ const AppContent: React.FC = () => {
         return <VehicleRegistryView />;
       case 'drivers':
         return <DriverManagementView />;
-      case 'trips':
-        return <TripManagementView />;
-      case 'maintenance':
-        return <MaintenanceView />;
-      case 'fuel':
-        return <FuelLogsView />;
       default:
         return <DashboardView />;
     }

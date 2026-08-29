@@ -47,22 +47,3 @@ export interface Trip {
   created_at: string;
   completed_at?: string | null;
 }
-
-export interface MaintenanceLog {
-  id: string;
-  vehicle_id: string;
-  issue_description: string;
-  cost: number;
-  status: 'Open' | 'Closed';
-  opened_at: string;
-  closed_at?: string | null;
-}
-
-export interface FuelLog {
-  id: string;
-  vehicle_id: string;
-  liters: number;
-  cost: number;
-  date: string;
-  odometer: number;
-}

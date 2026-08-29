@@ -31,7 +31,7 @@ export const SidebarLayout: React.FC<SidebarLayoutProps> = ({
     { name: 'Drivers', icon: Users, id: 'drivers' },
     { name: 'Trips', icon: Route, id: 'trips' },
     { name: 'Maintenance', icon: Wrench, id: 'maintenance' },
-    { name: 'Fuel Logs', icon: IndianRupee, id: 'fuel' },
+    { name: 'Expenses', icon: IndianRupee, id: 'expenses' },
   ];
 
   return (
