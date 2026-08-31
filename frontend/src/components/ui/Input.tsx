@@ -70,10 +70,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {(rightIcon || rightElement) && (
-  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-auto">
-    {rightElement || rightIcon}
-  </div>
-)}
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none">
+              {rightElement || rightIcon}
+            </div>
+          )}
         </div>
         {error && (
           <p id={errorId} className="mt-1.5 text-xs text-brand-danger flex items-center gap-1" role="alert">

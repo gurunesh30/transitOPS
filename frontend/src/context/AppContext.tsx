@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import type { User, UserRole, Trip, MaintenanceLog, FuelLog } from '../types';
-import { mockVehicles, mockDrivers, mockTrips, mockActivityLogs, mockMaintenanceLogs, mockFuelLogs } from '../data/mockData';
+import type { User, UserRole, Trip } from '../types';
+import { mockVehicles, mockDrivers, mockTrips, mockActivityLogs } from '../data/mockData';
 import type { ExtendedVehicle, ExtendedDriver, ActivityLog } from '../data/mockData';
 import { setAuthToken, vehiclesApi, driversApi, tripsApi, authApi } from '../services/api';
 
@@ -30,8 +30,8 @@ interface AppContextProps {
   setTheme: (theme: 'dark' | 'midnight' | 'corporate') => void;
   
   // Navigation
-  activePage: 'dashboard' | 'vehicles' | 'drivers' | 'trips' | 'maintenance' | 'fuel';
-  setActivePage: (page: 'dashboard' | 'vehicles' | 'drivers' | 'trips' | 'maintenance' | 'fuel') => void;
+  activePage: 'dashboard' | 'vehicles' | 'drivers' | 'trips';
+  setActivePage: (page: 'dashboard' | 'vehicles' | 'drivers' | 'trips') => void;
   sidebarCollapsed: boolean;
   setSidebarCollapsed: (collapsed: boolean) => void;
   
@@ -50,10 +50,6 @@ interface AppContextProps {
   setDrivers: React.Dispatch<React.SetStateAction<ExtendedDriver[]>>;
   trips: Trip[];
   setTrips: React.Dispatch<React.SetStateAction<Trip[]>>;
-  maintenanceLogs: MaintenanceLog[];
-  setMaintenanceLogs: React.Dispatch<React.SetStateAction<MaintenanceLog[]>>;
-  fuelLogs: FuelLog[];
-  setFuelLogs: React.Dispatch<React.SetStateAction<FuelLog[]>>;
   logs: ActivityLog[];
   addLog: (type: ActivityLog['type'], message: string, status: ActivityLog['status']) => void;
   
@@ -124,7 +120,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Navigation
-  const [activePage, setActivePage] = useState<'dashboard' | 'vehicles' | 'drivers' | 'trips' | 'maintenance' | 'fuel'>('dashboard');
+  const [activePage, setActivePage] = useState<'dashboard' | 'vehicles' | 'drivers' | 'trips'>('dashboard');
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
 
   // Command palette & Search
@@ -156,8 +152,6 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [vehicles, setVehicles] = useState<ExtendedVehicle[]>(mockVehicles);
   const [drivers, setDrivers] = useState<ExtendedDriver[]>(mockDrivers);
   const [trips, setTrips] = useState<Trip[]>(mockTrips);
-  const [maintenanceLogs, setMaintenanceLogs] = useState<MaintenanceLog[]>(mockMaintenanceLogs);
-  const [fuelLogs, setFuelLogs] = useState<FuelLog[]>(mockFuelLogs);
   const [logs, setLogs] = useState<ActivityLog[]>(mockActivityLogs);
 
   const addLog = (type: ActivityLog['type'], message: string, status: ActivityLog['status']) => {
@@ -285,8 +279,6 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     setVehicles(mockVehicles);
     setDrivers(mockDrivers);
     setTrips(mockTrips);
-    setMaintenanceLogs(mockMaintenanceLogs);
-    setFuelLogs(mockFuelLogs);
     setLogs(mockActivityLogs);
     addToast('You have been logged out', 'info');
   }, []);
@@ -345,8 +337,6 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       setVehicles(mockVehicles);
       setDrivers(mockDrivers);
       setTrips(mockTrips);
-      setMaintenanceLogs(mockMaintenanceLogs);
-      setFuelLogs(mockFuelLogs);
     }
   }, []);
 
@@ -445,10 +435,6 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         setDrivers,
         trips,
         setTrips,
-        maintenanceLogs,
-        setMaintenanceLogs,
-        fuelLogs,
-        setFuelLogs,
         logs,
         addLog,
         widgetOrder,
